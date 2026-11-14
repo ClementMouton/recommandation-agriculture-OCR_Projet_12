@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.data.load_data import load_crop_yield_data
-from src.data.preprocess import (
+from data.load_data import load_crop_yield_data
+from data.preprocess import (
     clean_data,
     prepare_classification,
     prepare_regression,

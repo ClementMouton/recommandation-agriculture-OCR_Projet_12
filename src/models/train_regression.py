@@ -35,19 +35,24 @@ EXPERIMENT_NAME = "agriculture_yield_regression"
 # Chargement des données
 # --------------------------------------------------
 
+def load_split(split):
+    X = pd.read_csv(DATA_DIR / f"X_{split}.csv")
+    y = pd.read_csv(DATA_DIR / f"y_{split}.csv")["Yield_tons_per_hectare"]
+    return X, y
+
+
 def load_datasets():
-    X_train = pd.read_csv(DATA_DIR / "X_train.csv")
-    X_test = pd.read_csv(DATA_DIR / "X_test.csv")
-
-    y_train = pd.read_csv(
-        DATA_DIR / "y_train.csv"
-    ).squeeze("columns")
-
-    y_test = pd.read_csv(
-        DATA_DIR / "y_test.csv"
-    ).squeeze("columns")
-
+    X_train, y_train = load_split("train")
+    X_test, y_test = load_split("test")
     return X_train, X_test, y_train, y_test
+
+
+def sample_training_data(X_train, y_train):
+    indices = X_train.sample(
+        n=min(TRAIN_SAMPLE_SIZE, len(X_train)),
+        random_state=RANDOM_STATE,
+    ).index
+    return X_train.loc[indices], y_train.loc[indices]
 
 
 # --------------------------------------------------
@@ -121,14 +126,7 @@ def main():
 
     X_train, X_test, y_train, y_test = load_datasets()
 
-    # Même échantillon d'entraînement pour tous les modèles
-    sample_indices = X_train.sample(
-        n=min(TRAIN_SAMPLE_SIZE, len(X_train)),
-        random_state=RANDOM_STATE,
-    ).index
-
-    X_train = X_train.loc[sample_indices]
-    y_train = y_train.loc[sample_indices]
+    X_train, y_train = sample_training_data(X_train, y_train)
 
     print(f"Entraînement : {len(X_train):,} lignes")
     print(f"Évaluation : {len(X_test):,} lignes")

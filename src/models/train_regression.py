@@ -4,7 +4,6 @@ import json
 
 import mlflow
 import mlflow.sklearn
-import numpy as np
 import pandas as pd
 
 from sklearn.compose import ColumnTransformer
@@ -12,14 +11,10 @@ from sklearn.dummy import DummyRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import (
-    mean_absolute_error,
-    mean_squared_error,
-    r2_score,
-)
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
+from src.evaluation.regression import evaluate_regression, log_regression_analysis
 
 # --------------------------------------------------
 # Configuration
@@ -65,7 +60,7 @@ def build_preprocessor(X):
     ).columns.tolist()
 
     categorical_features = X.select_dtypes(
-        include=["object", "category", "bool"]
+        exclude=["number"]
     ).columns.tolist()
 
     numeric_pipeline = Pipeline([
@@ -113,28 +108,6 @@ def get_models():
             min_samples_leaf=5,
             n_jobs=-1,
             random_state=RANDOM_STATE,
-        ),
-    }
-
-
-# --------------------------------------------------
-# Évaluation
-# --------------------------------------------------
-
-def evaluate_model(model, X_test, y_test):
-    predictions = model.predict(X_test)
-
-    return {
-        "mae": float(
-            mean_absolute_error(y_test, predictions)
-        ),
-        "rmse": float(
-            np.sqrt(
-                mean_squared_error(y_test, predictions)
-            )
-        ),
-        "r2": float(
-            r2_score(y_test, predictions)
         ),
     }
 
@@ -200,11 +173,10 @@ def main():
 
             pipeline.fit(X_train, y_train)
 
-            metrics = evaluate_model(
-                pipeline, X_test, y_test
-            )
-
+            predictions = pipeline.predict(X_test)
+            metrics = evaluate_regression(y_test, predictions)
             mlflow.log_metrics(metrics)
+            log_regression_analysis(X_test["Crop"], y_test, predictions)
 
             mlflow.sklearn.log_model(
                 sk_model=pipeline,

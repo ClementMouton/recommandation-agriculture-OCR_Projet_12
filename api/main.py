@@ -6,7 +6,7 @@ import mlflow
 import mlflow.sklearn
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Request
-from mlflow.models import get_model_info
+from mlflow.models import Model, get_model_info
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -44,11 +44,17 @@ async def lifespan(app: FastAPI):
     if not model_uri:
         raise RuntimeError("Définis YIELD_MODEL_URI avant de lancer l’API.")
 
-    db_path = PROJECT_ROOT / "mlflow.db"
-    tracking_uri = os.getenv("MLFLOW_TRACKING_URI") or f"sqlite:///{db_path.as_posix()}"
-    mlflow.set_tracking_uri(tracking_uri)
+    model_manifest = Path(model_uri) / "MLmodel"
+    if model_manifest.is_file():
+        metadata = Model.load(str(model_manifest)).metadata
+    else:
+        db_path = PROJECT_ROOT / "mlflow.db"
+        tracking_uri = os.getenv("MLFLOW_TRACKING_URI") or (
+            f"sqlite:///{db_path.as_posix()}"
+        )
+        mlflow.set_tracking_uri(tracking_uri)
+        metadata = get_model_info(model_uri).metadata
 
-    metadata = get_model_info(model_uri).metadata
     app.state.feature_columns = metadata["feature_columns"]
     app.state.categories = metadata["supported_categories"]
     app.state.model = mlflow.sklearn.load_model(model_uri)

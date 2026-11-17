@@ -1,0 +1,76 @@
+artifact_path: file:///C:/Users/mouto/Documents/Jedha/OCR_Projects/OCR_Projet_12_analyse/mlruns/2/models/m-f5da77ed75ab480a9eb3264133fff8e1/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.9.0
+    skops_trusted_types: null
+is_signature_from_type_hint: false
+metadata:
+  feature_columns:
+  - Region
+  - Soil_Type
+  - Crop
+  - Rainfall_mm
+  - Temperature_Celsius
+  - Fertilizer_Used
+  - Irrigation_Used
+  - Weather_Condition
+  supported_categories:
+    Crop:
+    - Barley
+    - Cotton
+    - Maize
+    - Rice
+    - Soybean
+    - Wheat
+    Region:
+    - East
+    - North
+    - South
+    - West
+    Soil_Type:
+    - Chalky
+    - Clay
+    - Loam
+    - Peaty
+    - Sandy
+    - Silt
+    Weather_Condition:
+    - Cloudy
+    - Rainy
+    - Sunny
+  target: Yield_tons_per_hectare
+  yield_unit: t/ha
+mlflow_version: 3.18.0
+model_id: m-f5da77ed75ab480a9eb3264133fff8e1
+model_size_bytes: 5413
+model_uuid: m-f5da77ed75ab480a9eb3264133fff8e1
+prompts: null
+run_id: c9191fc3229b4c2681a8b898c36e5a90
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "string", "name": "Region", "required": true}, {"type": "string",
+    "name": "Soil_Type", "required": true}, {"type": "string", "name": "Crop", "required":
+    true}, {"type": "double", "name": "Rainfall_mm", "required": true}, {"type": "double",
+    "name": "Temperature_Celsius", "required": true}, {"type": "boolean", "name":
+    "Fertilizer_Used", "required": true}, {"type": "boolean", "name": "Irrigation_Used",
+    "required": true}, {"type": "string", "name": "Weather_Condition", "required":
+    true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-11-17 11:04:38.002260'

@@ -1,0 +1,66 @@
+{
+  "dataframe_split": {
+    "columns": [
+      "Region",
+      "Soil_Type",
+      "Crop",
+      "Rainfall_mm",
+      "Temperature_Celsius",
+      "Fertilizer_Used",
+      "Irrigation_Used",
+      "Weather_Condition"
+    ],
+    "data": [
+      [
+        "West",
+        "Clay",
+        "Soybean",
+        835.2888314992368,
+        39.93615908386846,
+        true,
+        false,
+        "Cloudy"
+      ],
+      [
+        "North",
+        "Sandy",
+        "Barley",
+        867.6498545616375,
+        35.12578222016503,
+        true,
+        false,
+        "Sunny"
+      ],
+      [
+        "North",
+        "Peaty",
+        "Cotton",
+        269.6156345532702,
+        19.801170974760566,
+        true,
+        true,
+        "Cloudy"
+      ],
+      [
+        "North",
+        "Chalky",
+        "Wheat",
+        923.6074969135828,
+        21.42705506399116,
+        false,
+        false,
+        "Rainy"
+      ],
+      [
+        "North",
+        "Loam",
+        "Soybean",
+        354.78106698274064,
+        18.384813225109063,
+        true,
+        true,
+        "Cloudy"
+      ]
+    ]
+  }
+}

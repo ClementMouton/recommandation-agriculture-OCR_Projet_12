@@ -94,6 +94,8 @@ def main():
         print(f"Run MLflow : {run.info.run_id}")
         print(f"URI du modèle : {model_info.model_uri}")
 
+    return model_info.model_uri
+
 
 if __name__ == "__main__":
     main()
